@@ -1,5 +1,5 @@
 class RestaurantsController < ApplicationController
-  before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
+  before_action :set_restaurant, only: [:show, :edit, :update, :destroy, :chef]
 
   # GET /restaurants
   # GET /restaurants.json
@@ -59,6 +59,19 @@ class RestaurantsController < ApplicationController
       format.html { redirect_to restaurants_url, notice: 'Restaurant was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def top
+    @restaurants = Restaurant.where(stars: 5)
+  end
+
+  def search
+    @search_keyword = params[:q]
+    @restaurants = Restaurant.where('name LIKE ?', "%#{@search_keyword}%")
+  end
+
+  def chef
+    @chef_name = @restaurant.chef_name
   end
 
   private
